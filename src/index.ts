@@ -1,17 +1,23 @@
 import express, { Request, Response } from 'express';
 
 import { URLController } from 'controller/URLController';
+import { MongoConnection } from 'database/MongoConnection';
 
 
 const api = express()
 api.use(express.json())
 
-const urlController = new URLController()
-api.post('/shorten', urlController.shorten)
+const database = new MongoConnection()
+database.connect()
 
-api.use('/test', (request: Request, response: Response) => {
+const urlController = new URLController()
+
+api.post('/shorten', urlController.shorten)
+api.get('/:hash, urlController.redirect')
+
+/*api.use('/test', (request: Request, response: Response) => {
     response.json({ success: true })
-})
+})*/
 
 
 
